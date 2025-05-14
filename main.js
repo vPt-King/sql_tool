@@ -1,14 +1,18 @@
-const express = require('express')
-const morgan = require('morgan')
-const app = express()
-const port = 3000
+const express = require('express');
+const morgan = require('morgan');
+const app = express();
+const port = 3000;
 
-app.use(morgan('combined'))
+app.use(morgan('combined'));
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
+
 
 app.get('/', (req, res) => {
-  res.send('Hello World haha')
-})
+  res.render("index");
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
