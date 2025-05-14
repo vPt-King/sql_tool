@@ -3,13 +3,14 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "morgan": "^1.10.0",
     "nodemon": "^3.1.10"
   },
   "name": "sql_command_tool",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start":"nodemon main.js",
+    "start": "nodemon main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
