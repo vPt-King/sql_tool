@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "nanoid": "^5.1.5",
+    "pg": "^8.16.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
