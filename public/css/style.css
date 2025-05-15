@@ -33,6 +33,8 @@ body {
     padding: 10px;
     background: white;
     height: 100%;
+    position: relative;
+    margin-bottom: 20px;
 }
 
 .search-dropdown {
@@ -96,6 +98,7 @@ body {
 .search-input {
     padding-bottom: 10px;
     border-bottom: 1px solid #000;
+    margin-bottom: 10px;
 }
 
 .search-input input {
@@ -376,4 +379,68 @@ input:focus, button:focus {
 
 .record-dropdown-item:hover {
     background-color: #f5f5f5;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tag-item {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tag-item:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.records-list {
+    margin-top: 20px;
+    padding: 0 20px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.record-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: white;
+}
+
+.record-item:hover {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.record-name {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.record-command {
+    font-family: monospace;
+    color: #666;
 }

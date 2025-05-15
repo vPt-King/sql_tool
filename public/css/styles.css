@@ -1,0 +1,67 @@
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tag-item {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tag-item:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.search-section {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    margin-bottom: 10px;
+}
+
+.records-list {
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.record-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: white;
+}
+
+.record-item:last-child {
+    border-bottom: none;
+}
+
+.record-item:hover {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.record-name {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.record-command {
+    font-family: monospace;
+    color: #666;
+} 

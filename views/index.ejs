@@ -20,6 +20,9 @@
             <div class="search-input">
                 <input type="text" placeholder="Tìm kiếm ở đây">
             </div>
+            <div class="records-list">
+                <!-- Records will be displayed here -->
+            </div>
         </div>
 
         <div class="result-section">
@@ -37,14 +40,7 @@
                             <div class="record-dropdown-item" onclick="handleRecordAction('delete')">Xóa bản ghi</div>
                         </div>
                     </div>
-                    <div class="record-dropdown">
-                        <button class="record-dropdown-btn">Tags</button>
-                        <div class="record-dropdown-content">
-                            <div class="record-dropdown-item" onclick="handleTagAction('add')">Thêm tag</div>
-                            <div class="record-dropdown-item" onclick="handleTagAction('edit')">Sửa tag</div>
-                            <div class="record-dropdown-item" onclick="handleTagAction('delete')">Xóa tag</div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="result-content">
@@ -55,7 +51,7 @@
         <div class="filter-section">
             <h3>Lọc theo Tags</h3>
             <div class="tag-list">
-                <!-- Tags will be displayed here -->
+               
             </div>
         </div>
     </div>
@@ -86,12 +82,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tags">Tags</label>
-                    <div class="tag-selector">
-                        <select id="tags" name="tags" multiple>
-                            <!-- Tags will be populated here -->
-                        </select>
-                    </div>
+                    <label for="tags">Tags (Mỗi tag viết cách nhau bởi dấu ; và không có khoảng trắng)</label>
+                    <input type="text" id="tags" name="tags">
+                    <div id="tagError" class="error-message" style="display: none; color: red;"></div>
                 </div>
                 
                 <div class="form-actions">
@@ -102,283 +95,8 @@
         </div>
     </div>
 
-    <!-- Modal Form for Tags -->
-    <div id="addTagModal" class="modal">
-        <div class="modal-content">
-            <h2>Thêm tag mới</h2>
-            <div id="tagErrorMessage" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
-            <form id="addTagForm">
-                <div class="form-group">
-                    <label for="tagName">Tên tag *</label>
-                    <input type="text" id="tagName" name="tagName" required>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="btn-submit">Submit</button>
-                    <button type="button" class="btn-cancel" onclick="closeTagModal()">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        // Đợi cho DOM load xong
-        document.addEventListener('DOMContentLoaded', function() {
-            // Modal elements
-            const modal = document.getElementById('addRecordModal');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Get all dropdowns including search dropdown
-            const dropdowns = document.querySelectorAll('.record-dropdown');
-            
-            // Handle all dropdowns
-            dropdowns.forEach(dropdown => {
-                const dropdownBtn = dropdown.querySelector('.record-dropdown-btn');
-                
-                if (dropdownBtn) {
-                    dropdownBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        // Close all other dropdowns
-                        dropdowns.forEach(d => {
-                            if (d !== dropdown) {
-                                d.classList.remove('active');
-                            }
-                        });
-                        // Toggle current dropdown
-                        dropdown.classList.toggle('active');
-                    });
-                }
-            });
-
-            // Close all dropdowns when clicking outside
-            document.addEventListener('click', (e) => {
-                dropdowns.forEach(dropdown => {
-                    if (!dropdown.contains(e.target)) {
-                        dropdown.classList.remove('active');
-                    }
-                });
-            });
-
-            // Handle search option selection
-            window.handleSearchOption = function(option) {
-                const searchDropdown = document.querySelector('.search-section .record-dropdown');
-                const dropdownBtn = searchDropdown.querySelector('.record-dropdown-btn');
-                
-                // Update button text based on selection
-                switch(option) {
-                    case 'name':
-                        dropdownBtn.textContent = 'Tìm kiếm theo tên';
-                        break;
-                    case 'content':
-                        dropdownBtn.textContent = 'Tìm kiếm trong nội dung';
-                        break;
-                    case 'regex':
-                        dropdownBtn.textContent = 'Regex';
-                        break;
-                }
-                
-                // Close dropdown
-                searchDropdown.classList.remove('active');
-            };
-
-            // Handle record actions
-            window.handleRecordAction = function(action) {
-                // Find and close the records dropdown
-                const recordsDropdown = document.querySelector('.record-dropdown');
-                if (recordsDropdown) {
-                    recordsDropdown.classList.remove('active');
-                }
-                
-                switch(action) {
-                    case 'add':
-                        modal.style.display = 'flex';
-                        errorMessage.style.display = 'none';
-                        break;
-                    case 'all':
-                        console.log('All records clicked');
-                        break;
-                    case 'edit':
-                        console.log('Edit record clicked');
-                        break;
-                    case 'delete':
-                        console.log('Delete record clicked');
-                        break;
-                }
-            };
-
-            // Tag Modal Elements
-            const tagModal = document.getElementById('addTagModal');
-            const tagErrorMessage = document.getElementById('tagErrorMessage');
-
-            // Handle tag actions
-            window.handleTagAction = function(action) {
-                const tagsDropdown = document.querySelector('.record-dropdown:nth-child(4)');
-                if (tagsDropdown) {
-                    tagsDropdown.classList.remove('active');
-                }
-                
-                switch(action) {
-                    case 'add':
-                        tagModal.style.display = 'flex';
-                        tagErrorMessage.style.display = 'none';
-                        break;
-                    case 'edit':
-                        console.log('Edit tag clicked');
-                        break;
-                    case 'delete':
-                        console.log('Delete tag clicked');
-                        break;
-                }
-            };
-
-            // Close tag modal
-            window.closeTagModal = function() {
-                tagModal.style.display = 'none';
-                document.getElementById('addTagForm').reset();
-                tagErrorMessage.style.display = 'none';
-            };
-
-            // Handle tag form submission
-            document.getElementById('addTagForm').addEventListener('submit', async function(event) {
-                event.preventDefault();
-                
-                const tagName = document.getElementById('tagName').value.trim();
-                
-                if (!tagName) {
-                    tagErrorMessage.textContent = 'Vui lòng nhập tên tag';
-                    tagErrorMessage.style.display = 'block';
-                    return;
-                }
-
-                try {
-                    const response = await fetch('/add-tag', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            name: tagName
-                        })
-                    });
-
-                    if (response.ok) {
-                        closeTagModal();
-                        window.location.reload();
-                    } else {
-                        const errorText = await response.text();
-                        tagErrorMessage.textContent = errorText || 'Có lỗi xảy ra khi thêm tag';
-                        tagErrorMessage.style.display = 'block';
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    tagErrorMessage.textContent = 'Có lỗi xảy ra khi thêm tag';
-                    tagErrorMessage.style.display = 'block';
-                }
-            });
-
-            // Function to load and display tags
-            async function loadTags() {
-                try {
-                    const response = await fetch('/tags');
-                    const tags = await response.json();
-                    
-                    // Update tag list in filter section
-                    const tagList = document.querySelector('.tag-list');
-                    tagList.innerHTML = tags.map(tag => `
-                        <div class="tag-item" data-id="${tag.id}">
-                            <span>${tag.name}</span>
-                            <button class="tag-delete" onclick="deleteTag('${tag.id}')">×</button>
-                        </div>
-                    `).join('');
-                    
-                    // Update tag selector in record form
-                    const tagSelect = document.getElementById('tags');
-                    tagSelect.innerHTML = tags.map(tag => `
-                        <option value="${tag.id}">${tag.name}</option>
-                    `).join('');
-                } catch (error) {
-                    console.error('Error loading tags:', error);
-                }
-            }
-
-            // Function to delete a tag
-            async function deleteTag(tagId) {
-                if (!confirm('Are you sure you want to delete this tag?')) {
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`/tags/${tagId}`, {
-                        method: 'DELETE'
-                    });
-
-                    if (response.ok) {
-                        loadTags(); // Refresh tag list
-                    } else {
-                        const error = await response.text();
-                        alert('Error deleting tag: ' + error);
-                    }
-                } catch (error) {
-                    console.error('Error deleting tag:', error);
-                    alert('Error deleting tag');
-                }
-            }
-
-            // Load tags when page loads
-            loadTags();
-
-            // Form submission handling
-            const addRecordForm = document.getElementById('addRecordForm');
-            if (addRecordForm) {
-                addRecordForm.addEventListener('submit', async function(event) {
-                    event.preventDefault();
-                    
-                    const formData = {
-                        name: document.getElementById('name').value.trim(),
-                        command: document.getElementById('command').value.trim(),
-                        description: document.getElementById('description').value.trim(),
-                        note: document.getElementById('note').value.trim(),
-                        tags: Array.from(document.getElementById('tags').selectedOptions).map(option => option.value)
-                    };
-                    
-                    if (!formData.name || !formData.command) {
-                        errorMessage.textContent = 'Name và Command là trường bắt buộc';
-                        errorMessage.style.display = 'block';
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch('/add-record', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(formData)
-                        });
-
-                        if (response.ok) {
-                            closeModal();
-                            // Refresh the record list or update UI as needed
-                        } else {
-                            const error = await response.text();
-                            errorMessage.textContent = error;
-                            errorMessage.style.display = 'block';
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        errorMessage.textContent = 'Có lỗi xảy ra khi xử lý yêu cầu';
-                        errorMessage.style.display = 'block';
-                    }
-                });
-            }
-
-            // Close modal function
-            window.closeModal = function() {
-                modal.style.display = 'none';
-                document.getElementById('addRecordForm').reset();
-                errorMessage.style.display = 'none';
-            };
-        });
-    </script>
+    
+    <script src="/js/main.js"></script>
+    
 </body>
 </html>
