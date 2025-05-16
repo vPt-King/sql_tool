@@ -444,3 +444,68 @@ input:focus, button:focus {
     font-family: monospace;
     color: #666;
 }
+
+.record-detail {
+    width: 100%; /* Chiếm toàn bộ chiều rộng cha */
+    box-sizing: border-box; /* Đảm bảo padding không làm vượt quá 100% */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.record-detail p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.record-detail strong {
+    color: #333;
+}
+
+.record-tags {
+    margin-top: 20px;
+}
+
+.record-tags h4 {
+    margin-bottom: 10px;
+    color: #444;
+    font-size: 18px;
+}
+
+.record-tags ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.record-tags li {
+    background-color: #e0f0ff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #0077cc;
+    border: 1px solid #b3daff;
+}
+
+.record-detail pre {
+    background: linear-gradient(to right, #eef2f7, #f8f9fa);
+    border-left: 4px solid #007bff;
+    padding: 15px 20px;
+    font-family: monospace;
+    font-size: 15px;
+    color: #333;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 12px 0;
+    position: relative;
+}
+
+

@@ -146,6 +146,43 @@ app.get('/records', async (req, res) => {
   }
 });
 
+// Route để lấy chi tiết record và tags của nó
+app.get('/record/:id', async (req, res) => {
+  const recordId = req.params.id;
+  
+  try {
+    // Lấy thông tin chi tiết của record
+    const recordQuery = `
+      SELECT id, name, command, description, note
+      FROM command 
+      WHERE id = $1
+    `;
+    const recordResult = await db.pool.query(recordQuery, [recordId]);
+    
+    if (recordResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Record không tồn tại' });
+    }
+
+    // Lấy thông tin về các command_tag của record này
+    const commandTagsQuery = `
+      SELECT ct.id, ct.tag_id, t.name as tag_name
+      FROM command_tag ct
+      JOIN tag t ON ct.tag_id = t.id
+      WHERE ct.command_id = $1
+    `;
+    const commandTagsResult = await db.pool.query(commandTagsQuery, [recordId]);
+
+    // Trả về cả thông tin record và command_tags
+    res.json({
+      record: recordResult.rows[0],
+      commandTags: commandTagsResult.rows
+    });
+  } catch (error) {
+    console.error('Error fetching record details:', error);
+    res.status(500).json({ error: 'Lỗi khi lấy thông tin record' });
+  }
+});
+
 
 
 

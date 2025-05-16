@@ -182,6 +182,7 @@ async function loadTags() {
     }
 }
 
+//Chức năng hiển thị all records
 async function loadAllRecords() {
     try {
         const response = await fetch('/records');
@@ -189,14 +190,61 @@ async function loadAllRecords() {
         
         const recordsList = document.querySelector('.records-list');
         if (recordsList) {
-            recordsList.innerHTML = records.map(record => `
-                <div class="record-item">
-                    <div class="record-name">${record.name}</div>
-                    <div class="record-command">${record.command}</div>
-                </div>
-            `).join('');
+            loadRecords(recordsList, records);
         }
     } catch (error) {
         console.error('Error loading records:', error);
     }
+}
+
+//Function hiển thị records
+function loadRecords(recordsList, records) {
+    recordsList.innerHTML = records.map(record => `
+        <div class="record-item" id="${record.id}">
+            <div class="record-name">${record.name}</div>
+            <div class="record-command">${record.command}</div>
+        </div>
+    `).join('');
+
+    const recordItems = recordsList.querySelectorAll('.record-item');
+    recordItems.forEach(item => {
+        item.addEventListener('click', async function() {
+            const recordId = this.id;
+            const resultContent = document.querySelector('.result-content');
+            
+            try {
+                // Gửi request lên server để lấy chi tiết record và tags
+                const response = await fetch(`/record/${recordId}`);
+                const data = await response.json();
+                
+                if (resultContent) {
+                    // Xử lý command string để xuống dòng khi gặp dấu ;
+                    const formattedCommand = data.record.command.split(';').map(cmd => cmd.trim()).join(';\n');
+                    
+                    // Hiển thị thông tin chi tiết record và tags
+                    resultContent.innerHTML = `
+                        <div class="record-detail">
+                            <p><strong>Tên:</strong> ${data.record.name}</p>
+                            <p><strong>Command:</strong> <pre>${formattedCommand}</pre></p>
+                            <p><strong>Mô tả:</strong> ${data.record.description || ''}</p>
+                            <p><strong>Ghi chú:</strong> ${data.record.note || ''}</p>
+                            <div class="record-tags">
+                                <h4>Tags:</h4>
+                                <ul>
+                                    ${data.commandTags.map(tag => `
+                                        <li>${tag.tag_name}</li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching record details:', error);
+                if (resultContent) {
+                    resultContent.innerHTML = '<p class="error">Có lỗi xảy ra khi tải dữ liệu</p>';
+                }
+            }
+        });
+    });
 }
